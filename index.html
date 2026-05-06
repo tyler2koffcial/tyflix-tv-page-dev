@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TyFlix TV | Official Download</title>
+    <style>
+        :root {
+            --neon-green: #00ff88;
+            --dark-bg: #050505;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(0, 255, 136, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            background: radial-gradient(circle at top right, #002211 0%, #050505 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .brand { font-weight: bold; font-size: 1.2rem; }
+        .brand span { color: var(--neon-green); }
+
+        .main-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 40px 20px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .app-icon {
+            width: 110px;
+            height: 110px;
+            border-radius: 24px;
+            margin-bottom: 25px;
+            border: 2px solid var(--neon-green);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
+            object-fit: cover;
+        }
+
+        h1 { font-size: 2.2rem; margin-bottom: 10px; font-weight: 800; }
+        h1 span { color: var(--neon-green); }
+
+        .btn-dl {
+            display: block;
+            background: var(--neon-green);
+            color: #000;
+            text-decoration: none;
+            padding: 20px;
+            border-radius: 18px;
+            font-weight: 900;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+            transition: 0.3s;
+        }
+
+        .preview-section {
+            width: 100%;
+            max-width: 450px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .preview-label {
+            color: var(--neon-green);
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .slider-container {
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: #111;
+        }
+
+        .screenshot { width: 100%; display: block; object-fit: contain; }
+
+        .fade { animation: fadeEffect 0.8s; }
+        @keyframes fadeEffect { from { opacity: 0.4; } to { opacity: 1; } }
+
+        .dot { height: 8px; width: 8px; margin: 0 4px; background-color: #333; border-radius: 50%; display: inline-block; transition: 0.3s; }
+        .dot.active { background-color: var(--neon-green); width: 20px; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="brand">TyFlix <span>TV</span></div>
+        <div id="clock" style="color: #666;">21:10</div>
+    </header>
+
+    <div class="main-card">
+        <!-- Main Icon -->
+        <img src="Screenshot_20260506-203119.jpg" alt="Icon" class="app-icon">
+        <h1>TyFlix <span>TV</span></h1>
+        <p style="color:#b0b0b0; margin-bottom:30px;">Unlimited Movies & Live TV.</p>
+
+        <!-- Direct Link -->
+        <a href="https://github.com/tyler2koffcial/TyFlix-TV-Release/releases/download/v9.8/TyFlix.Tv_9.8.apk" class="btn-dl">
+            ↓ DOWNLOAD APK
+        </a>
+    </div>
+
+    <div class="preview-section">
+        <span class="preview-label">App Interface</span>
+        <div class="slider-container">
+            <!-- Starting Image -->
+            <img src="movies.jpg" class="screenshot fade" id="current-slide">
+        </div>
+        <div id="dot-box" style="margin-top:15px;"></div>
+    </div>
+
+    <script>
+        // Saktong file names base sa binigay mo
+        const images = [
+            "movies.jpg", 
+            "homepages.png", 
+            "iptv.jpg"
+        ];
+
+        let currentIndex = 0;
+        const slideImg = document.getElementById('current-slide');
+        const dotBox = document.getElementById('dot-box');
+
+        images.forEach((_, index) => {
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            if (index === 0) dot.classList.add('active');
+            dotBox.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        function changeImage() {
+            currentIndex++;
+            if (currentIndex >= images.length) currentIndex = 0;
+            slideImg.classList.remove('fade');
+            void slideImg.offsetWidth; 
+            slideImg.classList.add('fade');
+            slideImg.src = images[currentIndex];
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        setInterval(changeImage, 3500);
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = 
+                now.getHours().toString().padStart(2, '0') + ":" + 
+                now.getMinutes().toString().padStart(2, '0');
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>
